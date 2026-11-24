@@ -225,7 +225,8 @@ const authErr = code => ({
   'auth/weak-password': 'הסיסמה חייבת להכיל לפחות 6 תווים',
   'auth/too-many-requests': 'יותר מדי ניסיונות. נסה שוב בעוד כמה דקות',
   'auth/network-request-failed': 'אין חיבור לאינטרנט',
-  'auth/operation-not-allowed': 'כניסה באימייל לא הופעלה ב-Firebase'
+  'auth/operation-not-allowed': 'כניסה באימייל לא הופעלה ב-Firebase',
+  'auth/admin-restricted-operation': 'יצירת חשבונות חדשים סגורה'
 }[code] || 'שגיאה: ' + code);
 
 // שני מצבים: 'in' = כניסה, 'up' = יצירת חשבון
@@ -245,6 +246,10 @@ function setAuthMode(mode) {
   $('authEmail').focus();
 }
 $('modeBtn').onclick = () => setAuthMode($('authForm').dataset.mode === 'up' ? 'in' : 'up');
+
+// הרשמות חסומות ב-Firebase (משתמש יחיד). כדי לפתוח: true כאן + "Enable create" ב-Firebase
+const ALLOW_SIGNUP = false;
+$('modeBtn').hidden = !ALLOW_SIGNUP;
 
 function authNote(text, ok) {
   $('authMsg').textContent = text;
