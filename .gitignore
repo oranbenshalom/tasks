@@ -1,0 +1,5 @@
+# קבצים אישיים שלא עולים למאגר הציבורי
+CLAUDE.md
+.claude/
+*.local.*
+tasks-backup-*.json

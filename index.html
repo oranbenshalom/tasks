@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>המטלות שלי</title>
+<meta name="theme-color" content="#2f6fed">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="מטלות">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="loading" class="center-screen">טוען...</div>
+
+<section id="authScreen" class="center-screen" hidden>
+  <form id="authForm" class="auth-card" data-mode="in">
+    <img src="icon.svg" alt="" width="64" height="64">
+    <h1>המטלות שלי</h1>
+    <h2 id="authTitle">כניסה</h2>
+    <input id="authEmail" type="email" name="email" placeholder="אימייל" autocomplete="username" required>
+    <div class="pw">
+      <input id="authPass" type="password" name="password" placeholder="סיסמה" autocomplete="current-password" required>
+      <button type="button" class="eye" data-for="authPass" aria-label="הצג סיסמה (לחץ והחזק)">👁</button>
+    </div>
+    <div class="pw up-only">
+      <input id="authPass2" type="password" name="password2" placeholder="אימות סיסמה" autocomplete="new-password">
+      <button type="button" class="eye" data-for="authPass2" aria-label="הצג סיסמה (לחץ והחזק)">👁</button>
+    </div>
+    <button type="submit" id="authSubmit" class="primary">כניסה</button>
+    <button type="button" id="modeBtn" class="link">פעם ראשונה? יצירת חשבון</button>
+    <button type="button" id="resetBtn" class="link in-only">שכחתי סיסמה</button>
+    <p id="authMsg" role="alert"></p>
+  </form>
+</section>
+
+<div id="appScreen" class="app" hidden>
+  <header>
+    <h1>המטלות שלי</h1>
+    <button id="menuBtn" class="icon-btn" aria-label="תפריט">⋯</button>
+  </header>
+
+  <form id="addForm" autocomplete="off">
+    <input id="addInput" type="text" placeholder="מה צריך לזכור?" enterkeyhint="done" aria-label="משימה חדשה">
+    <button type="button" id="todayToggle" class="icon-btn star" aria-pressed="false" aria-label="להיום">☆</button>
+    <button type="submit" class="add-btn" aria-label="הוספה">+</button>
+  </form>
+
+  <nav class="tabs">
+    <button data-view="today" class="tab active">להיום <span id="todayCount" class="count"></span></button>
+    <button data-view="all" class="tab">הכול <span id="allCount" class="count"></span></button>
+  </nav>
+  <div id="cats" class="chips" aria-label="קטגוריות"></div>
+
+  <main id="list"></main>
+
+  <details id="doneBox" hidden>
+    <summary>בוצעו <span id="doneCount"></span></summary>
+    <div id="doneList"></div>
+  </details>
+</div>
+
+<div id="toast" role="status" hidden></div>
+
+<dialog id="menuDlg">
+  <h2>אפשרויות</h2>
+  <p id="syncNote" class="hint"></p>
+  <button id="importBtn" class="menu-item">ייבוא מוואטסאפ (הדבקה)</button>
+  <button id="exportBtn" class="menu-item">גיבוי: הורדת כל המשימות</button>
+  <button id="addCatBtn" class="menu-item">הוספת קטגוריה</button>
+  <button id="clearDoneBtn" class="menu-item">מחיקת כל המשימות שבוצעו</button>
+  <button id="signOutBtn" class="menu-item" hidden>התנתקות</button>
+  <button class="menu-item close" value="close">סגירה</button>
+</dialog>
+
+<dialog id="importDlg">
+  <h2>ייבוא מוואטסאפ</h2>
+  <p class="hint">הדבק כאן את ההודעות מהקבוצה. כל שורה תהפוך למשימה, ותאריכים ושמות שולחים יוסרו.</p>
+  <textarea id="importText" rows="8" placeholder="הדבק כאן..."></textarea>
+  <div class="row">
+    <select id="importCat"></select>
+    <button id="importGo" class="primary">ייבוא</button>
+    <button class="menu-item close" value="close">ביטול</button>
+  </div>
+</dialog>
+
+<script type="module" src="app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
