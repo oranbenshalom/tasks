@@ -1,6 +1,6 @@
 // Service worker בסיסי: שומר את קבצי האפליקציה כדי שתיפתח גם בלי אינטרנט.
 // הנתונים עצמם נשמרים במטמון של Firestore, לא כאן.
-const CACHE = 'todo-shell-v2';
+const CACHE = 'todo-shell-v3';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'storage.js', 'firebase-config.js',
   'manifest.webmanifest', 'icon.svg', 'icon-180.png', 'icon-192.png'];
 
@@ -22,7 +22,8 @@ self.addEventListener('fetch', e => {
   const ours = url.origin === self.location.origin || url.hostname === 'www.gstatic.com';
   if (e.request.method !== 'GET' || !ours) return;
   e.respondWith(
-    fetch(e.request).then(res => {
+    // no-cache: תמיד בודק מול השרת אם יש גרסה חדשה (בלי להוריד מחדש אם לא השתנה)
+    fetch(e.request, { cache: 'no-cache' }).then(res => {
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(e.request, copy));
       return res;
